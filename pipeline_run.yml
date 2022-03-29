@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: tutorial-pipeline-run-2
+spec:
+
+  pipelineRef:
+    name: node-pipeline
+  workspaces:
+    - name: source
+      persistentVolumeClaim:
+        claimName: my-pvc
+  params:
+    - name: url
+      value: https://github.com/mustafaStakater/nodejsSample
+    - name: destinationImage
+      value: mustafastakater/mustafa_repo
+    - name: contextDir
+      value: nodejssample
