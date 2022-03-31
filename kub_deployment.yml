@@ -2,7 +2,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: nodejs-deployment
-  namespace: tektontutorial
+  namespace: tektontutorial-gitops
 spec:
   replicas: 3
   selector:
@@ -26,7 +26,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: nodejs-svc
-  namespace: tektontutorial
+  namespace: tektontutorial-gitops
 spec:
   type: ClusterIP
   selector:
@@ -41,7 +41,7 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: nodejs-route
-  namespace: tektontutorial
+  namespace: tektontutorial-gitops
 spec:  
   to:
     kind: Service
