@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: docker.io/mustafastakater/mustafa_repo:290b4a2
+          image: docker.io/mustafastakater/mustafa_repo:ae84180
           ports:
             - containerPort: 9005
               protocol: TCP
