@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: database-deployment
   namespace: tektontutorial
 spec:
   selector:
     matchLabels:
-      app: nginx
+      app: database
   template:
     metadata:
       labels:
-        app: nginx
+        app: database
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
+      - name: db
+        image: registry.redhat.io/rhscl/mysql-80-rhel7
         ports:
-        - containerPort: 80
+        - containerPort: 3306
