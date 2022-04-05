@@ -4,7 +4,7 @@ metadata:
   name: nodejs-deployment
   namespace: tektontutorial
 spec:
-  replicas: 10
+  replicas: 8
   selector:
     matchLabels:
       app: httpd
