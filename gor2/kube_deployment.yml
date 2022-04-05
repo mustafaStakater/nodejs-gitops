@@ -4,6 +4,7 @@ metadata:
   name: database-deployment
   namespace: tektontutorial
 spec:
+  replicas: 4
   selector:
     matchLabels:
       app: database
