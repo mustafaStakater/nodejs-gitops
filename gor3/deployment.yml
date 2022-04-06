@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: application
+    appVersion: "4dba17e"
+    group: com.stakater.platform
+    provider: stakater
+    team: stakater
+    chart: "application-1.1.9"
+    release: "release-name"
+    heritage: "Helm"
+  namespace: default
+  name: nginx
+---
+# Source: application/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: application
+    appVersion: "4dba17e"
+    group: com.stakater.platform
+    provider: stakater
+    team: stakater
+    chart: "application-1.1.9"
+    release: "release-name"
+    heritage: "Helm"
+  name: application
+  namespace: default
+spec:
+  selector:
+    app: application
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+# Source: application/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: application
+    appVersion: "4dba17e"
+    group: com.stakater.platform
+    provider: stakater
+    team: stakater
+    chart: "application-1.1.9"
+    release: "release-name"
+    heritage: "Helm"
+  annotations: 
+    reloader.stakater.com/auto: "true"
+  name: application
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: application
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: application
+    spec:
+      containers:
+      - name: application
+        image: "docker.io/mustafastakater/mustafa_repo:4dba17e"
+        imagePullPolicy: IfNotPresent 
+        livenessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+          initialDelaySeconds: 10
+          httpGet:
+            path: /
+            port: 9005 
+        readinessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+          initialDelaySeconds: 10
+          httpGet:
+            path: /
+            port: 9005
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: 0.5
+          requests:
+            memory: 128Mi
+            cpu: 0.1
+      serviceAccountName: nginx
+---
+# Source: application/templates/hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: application
+  labels:
+    
+    app: application
+    appVersion: "4dba17e"
+    
+    group: com.stakater.platform
+    provider: stakater
+    team: stakater
+    chart: "application-1.1.9"
+    release: "release-name"
+    heritage: "Helm"    
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: application
+  minReplicas: 3
+  maxReplicas: 5
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 60
+          type: Utilization
+      type: Resource
+    - resource:
+        name: memory
+        target:
+          averageUtilization: 60
+          type: Utilization
+      type: Resource
