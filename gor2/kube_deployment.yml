@@ -4,7 +4,7 @@ metadata:
   name: database-deployment
   namespace: tektontutorial
 spec:
-  replicas: 8
+  replicas: 1
   selector:
     matchLabels:
       app: database
@@ -20,4 +20,4 @@ spec:
         - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "rotttt"
+          value: "rott2131k23tt"
