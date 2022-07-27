@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: database-deployment
+  name: database-deployment1
   namespace: tektontutorial
 spec:
   replicas: 2
